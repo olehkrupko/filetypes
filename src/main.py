@@ -1,6 +1,4 @@
 import argparse
-import sys
-import os
 from pathlib import Path
 from .scanner import scan_directory
 from .storage import Storage

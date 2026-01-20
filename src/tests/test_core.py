@@ -1,5 +1,4 @@
 import pytest
-import os
 import tempfile
 from pathlib import Path
 from ..scanner import scan_directory

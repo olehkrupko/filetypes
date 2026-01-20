@@ -38,14 +38,16 @@ class Storage:
                 )
                 if len(batch) >= batch_size:
                     conn.executemany(
-                        "INSERT OR REPLACE INTO files (path, extension, size_bytes, last_modified) VALUES (?, ?, ?, ?)",
+                        "INSERT OR REPLACE INTO files "
+                        "(path, extension, size_bytes, last_modified) VALUES (?, ?, ?, ?)",
                         batch,
                     )
                     batch = []
 
             if batch:
                 conn.executemany(
-                    "INSERT OR REPLACE INTO files (path, extension, size_bytes, last_modified) VALUES (?, ?, ?, ?)",
+                    "INSERT OR REPLACE INTO files "
+                    "(path, extension, size_bytes, last_modified) VALUES (?, ?, ?, ?)",
                     batch,
                 )
             conn.commit()
