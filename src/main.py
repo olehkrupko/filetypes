@@ -42,7 +42,6 @@ def get_unique_report_path(report_dir: Path) -> Path:
 
 def main():
     parser = argparse.ArgumentParser(description="File Scanner Service")
-    parser.add_argument("--force-scan", action="store_true", help="Force rescan of filesystem")
     parser.add_argument("--force-cache", action="store_true", help="Use cache only")
     parser.add_argument("--verbose", action="store_true", help="Print detailed output")
     parser.add_argument("--action", choices=["report", "move", "copy"], default="report", help="Action to perform")
@@ -66,8 +65,6 @@ def main():
     should_scan = True
     if args.force_cache:
         should_scan = False
-    elif args.force_scan:
-        should_scan = True
     else:
         # Default behavior: if cache exists/is populated, maybe ask? 
         # But per requirements/simplicity, let's say default is to scan 
@@ -92,7 +89,7 @@ def main():
         # or use UPSERT and then maybe cleanup deleted?
         # For this version, let's clear cache on force-scan or fresh scan 
         # to avoid stale entries of deleted files.
-        if args.force_scan:
+        if not args.force_cache:
             print("Clearing cache...")
             storage.clear_cache()
             
@@ -164,7 +161,7 @@ def main():
             move_files(files, args.dest)
             # Update cache after move?
             # For now, let's recommend rescan.
-            print("Note: Cache may be stale after move. Run with --force-scan to update.")
+            print("Note: Cache may be stale after move. Run scanner again to update.")
             
         print("Operation complete.")
 

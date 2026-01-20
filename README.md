@@ -21,16 +21,12 @@ docker compose run scanner --path /data
 
 # Use cached results only (no filesystem scan)
 docker compose run scanner --force-cache
-
-# Force a fresh scan
-docker compose run scanner --force-scan
 ```
 
 ## CLI Arguments
 
 | Argument | Default | Description |
 |----------|---------|-------------|
-| `--force-scan` | `false` | Ignore cache, rescan filesystem |
 | `--force-cache` | `false` | Use cache only, skip scanning |
 | `--verbose` | `false` | Show detailed output |
 | `--action` | `report` | Action: `report`, `copy`, or `move` |
