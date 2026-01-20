@@ -1,10 +1,12 @@
 services:
   scanner:
+    container_name: filetypes-scanner
     build: .
     volumes:
       - ./data:/data
       - "/Users/olehkrupko/Projects/012 Fitness:/scan:ro"
       - cache_data:/app/cache
+    command: []
 
 volumes:
   cache_data:
