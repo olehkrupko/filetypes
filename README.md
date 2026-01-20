@@ -13,6 +13,9 @@ A Dockerized Python service that recursively scans directories, groups files by 
 ## Quick Start
 
 ```bash
+# one-liner
+docker compose up --build --remove-orphans --force-recreate
+
 # Build the container
 docker compose build
 
