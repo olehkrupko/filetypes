@@ -159,9 +159,9 @@ def main():
         print(f"Destination: {args.dest}")
         
         if args.action == "copy":
-            copy_files(files, args.dest)
+            copy_files(files, args.dest, base_path=SCAN_PATH)
         elif args.action == "move":
-            move_files(files, args.dest)
+            move_files(files, args.dest, base_path=SCAN_PATH)
             # Update cache after move?
             # For now, let's recommend rescan.
             print("Note: Cache may be stale after move. Run scanner again to update.")
