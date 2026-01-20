@@ -17,10 +17,13 @@ A Dockerized Python service that recursively scans directories, groups files by 
 docker compose build
 
 # Scan a directory and generate a report
-docker compose run scanner --path /data
+docker compose run --remove-orphans scanner
 
 # Use cached results only (no filesystem scan)
-docker compose run scanner --force-cache
+docker compose run --remove-orphans scanner --force-cache --type mp4
+
+# Use cached results only (no filesystem scan)
+docker compose run --remove-orphans scanner --force-cache --type mp4 --action copy --dest /data/mp4
 ```
 
 ## CLI Arguments
