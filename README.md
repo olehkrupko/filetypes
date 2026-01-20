@@ -30,7 +30,6 @@ docker compose run scanner --force-scan
 
 | Argument | Default | Description |
 |----------|---------|-------------|
-| `--path` | `/data` | Directory to scan |
 | `--force-scan` | `false` | Ignore cache, rescan filesystem |
 | `--force-cache` | `false` | Use cache only, skip scanning |
 | `--verbose` | `false` | Show detailed output |
@@ -43,7 +42,7 @@ docker compose run scanner --force-scan
 
 ### Generate a Report
 ```bash
-docker compose run scanner --path /data --verbose
+docker compose run scanner --verbose
 ```
 
 Reports are saved to `/data/reports/report-YYYYMMDD_HHMMSS.txt`

@@ -4,8 +4,6 @@ services:
     volumes:
       - ./data:/data
       - cache_data:/app/cache
-    # By default, run help to show usage
-    command: ["--help"]
 
 volumes:
   cache_data:

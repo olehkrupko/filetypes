@@ -22,6 +22,9 @@ def format_size(size_bytes: int) -> str:
         size_bytes /= 1024
     return f"{size_bytes:.2f} PB"
 
+# Default paths
+SCAN_PATH = "/data/scan"
+
 def get_unique_report_path(report_dir: Path) -> Path:
     """Generate a unique report filename using timestamp."""
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -39,7 +42,6 @@ def get_unique_report_path(report_dir: Path) -> Path:
 
 def main():
     parser = argparse.ArgumentParser(description="File Scanner Service")
-    parser.add_argument("--path", default="/data", help="Path to scan")
     parser.add_argument("--force-scan", action="store_true", help="Force rescan of filesystem")
     parser.add_argument("--force-cache", action="store_true", help="Use cache only")
     parser.add_argument("--verbose", action="store_true", help="Print detailed output")
@@ -74,7 +76,7 @@ def main():
         pass
 
     if should_scan and not args.force_cache:
-        print(f"Scanning {args.path}...")
+        print(f"Scanning {SCAN_PATH}...")
         start_time = time.time()
         
         # Batch insert
@@ -83,7 +85,7 @@ def main():
         # But to show progress, we might want to wrap it.
         # Since we don't know total, tqdm will just show rate.
         
-        scanner_gen = scan_directory(args.path)
+        scanner_gen = scan_directory(SCAN_PATH)
         # Clear cache before new scan? 
         # If we want to mirror the folder, we probably should clear old entries 
         # or use UPSERT and then maybe cleanup deleted?
@@ -107,7 +109,7 @@ def main():
         lines = []
         lines.append("File Type Report")
         lines.append(f"Generated: {datetime.now().isoformat()}")
-        lines.append(f"Scanned path: {args.path}")
+        lines.append(f"Scanned path: {SCAN_PATH}")
         lines.append("")
         lines.append(f"{'Extension':<15} | {'Count':<10} | {'Total Size':<15}")
         lines.append("-" * 46)
