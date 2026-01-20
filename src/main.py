@@ -158,11 +158,6 @@ def main():
         print(f"Found {len(files)} files of type '{ext}'.")
         print(f"Destination: {args.dest}")
         
-        confirm = input(f"Proceed with {args.action}? [y/N] ")
-        if confirm.lower() != 'y':
-            print("Aborted.")
-            return
-            
         if args.action == "copy":
             copy_files(files, args.dest)
         elif args.action == "move":
