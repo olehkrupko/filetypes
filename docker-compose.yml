@@ -3,6 +3,7 @@ services:
     build: .
     volumes:
       - ./data:/data
+      - "/Users/olehkrupko/Projects/012 Fitness:/scan:ro"
       - cache_data:/app/cache
 
 volumes:

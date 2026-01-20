@@ -23,7 +23,7 @@ def format_size(size_bytes: int) -> str:
     return f"{size_bytes:.2f} PB"
 
 # Default paths
-SCAN_PATH = "/data/scan"
+SCAN_PATH = "/scan"
 
 def get_unique_report_path(report_dir: Path) -> Path:
     """Generate a unique report filename using timestamp."""
@@ -48,6 +48,7 @@ def main():
     parser.add_argument("--action", choices=["report", "move", "copy"], default="report", help="Action to perform")
     parser.add_argument("--type", help="File extension filter (required for move/copy)")
     parser.add_argument("--dest", help="Destination directory (required for move/copy)")
+    parser.add_argument("--report", action="store_true", help="Save report to file")
     parser.add_argument("--report-dir", default="/data/reports", help="Directory to save report files")
 
     args = parser.parse_args()
@@ -130,11 +131,12 @@ def main():
         # Print to stdout
         print("\n" + report_content)
         
-        # Save to file
-        report_dir = Path(args.report_dir)
-        report_path = get_unique_report_path(report_dir)
-        report_path.write_text(report_content)
-        print(f"\nReport saved to: {report_path}")
+        # Save to file only if --report flag is used
+        if args.report:
+            report_dir = Path(args.report_dir)
+            report_path = get_unique_report_path(report_dir)
+            report_path.write_text(report_content)
+            print(f"\nReport saved to: {report_path}")
         
         if args.verbose:
             # TODO: Add listing if needed, but for "really big folders" this is dangerous by default
