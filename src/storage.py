@@ -58,5 +58,5 @@ class Storage:
             
     def get_files_by_extension(self, extension: str) -> typing.List[str]:
         with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.execute("SELECT path FROM files WHERE extension = ?", (extension,))
+            cursor = conn.execute("SELECT path FROM files WHERE extension = ? ORDER BY path", (extension,))
             return [row[0] for row in cursor.fetchall()]

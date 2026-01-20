@@ -135,9 +135,17 @@ def main():
             report_path.write_text(report_content)
             print(f"\nReport saved to: {report_path}")
         
-        if args.verbose:
-            # TODO: Add listing if needed, but for "really big folders" this is dangerous by default
-            pass
+        # If --type is specified, list all files of that type
+        if args.type:
+            ext = args.type.lower().lstrip('.')
+            files = storage.get_files_by_extension(ext)
+            if files:
+                print(f"\nFiles with extension '{ext}' ({len(files)} files):")
+                print("-" * 60)
+                for f in files:
+                    print(f)
+            else:
+                print(f"\nNo files found with extension '{ext}'")
 
     # Operations
     elif args.action in ["move", "copy"]:
