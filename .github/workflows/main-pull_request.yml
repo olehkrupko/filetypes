@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  python-docker:
+  docker-ghcr:
     runs-on: ubuntu-latest
     permissions:
       packages: write
