@@ -43,6 +43,7 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 ## Examples
 
 ### Generate a Report
+
 ```bash
 docker compose run scanner --verbose
 ```
@@ -50,11 +51,13 @@ docker compose run scanner --verbose
 Reports are saved to `/data/reports/report-YYYYMMDD_HHMMSS.txt`
 
 ### Copy All PDFs to a Folder
+
 ```bash
 docker compose run scanner --action copy --type pdf --dest /data/pdfs
 ```
 
 ### Move All Images
+
 ```bash
 docker compose run scanner --action move --type jpg --dest /data/images
 ```
