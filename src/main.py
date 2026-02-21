@@ -171,10 +171,12 @@ def main():
         print(f"Found {len(files)} files of type(s) '{label}'.")
         print(f"Destination: {args.dest}")
 
+        group_by_ext = len(extensions) > 1
+
         if args.action == "copy":
-            copy_files(files, args.dest, base_path=SCAN_PATH)
+            copy_files(files, args.dest, base_path=SCAN_PATH, group_by_ext=group_by_ext)
         elif args.action == "move":
-            move_files(files, args.dest, base_path=SCAN_PATH)
+            move_files(files, args.dest, base_path=SCAN_PATH, group_by_ext=group_by_ext)
             # Update cache after move?
             # For now, let's recommend rescan.
             print("Note: Cache may be stale after move. Run scanner again to update.")
