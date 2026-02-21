@@ -35,7 +35,7 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 |----------|---------|-------------|
 | `--force-cache` | `false` | Use cache only, skip scanning |
 | `--action` | `report` | Action: `report`, `copy`, or `move` |
-| `--type` | — | File extension filter (required for copy/move) |
+| `--type` | — | File extension filter(s), space-separated (required for copy/move) |
 | `--dest` | — | Destination directory (required for copy/move) |
 
 ## Examples

@@ -55,7 +55,7 @@ def main():
         default="report",
         help="Action to perform",
     )
-    parser.add_argument("--type", help="File extension filter (required for move/copy)")
+    parser.add_argument("--type", nargs="+", help="File extension filter(s) (required for move/copy)")
     parser.add_argument("--dest", help="Destination directory (required for move/copy)")
 
 
@@ -146,27 +146,29 @@ def main():
         report_path.write_text(report_content)
         print(f"\nReport saved to: {report_path}")
 
-        # If --type is specified, list all files of that type
+        # If --type is specified, list all files of those types
         if args.type:
-            ext = args.type.lower().lstrip(".")
-            files = storage.get_files_by_extension(ext)
+            extensions = [t.lower().lstrip(".") for t in args.type]
+            files = storage.get_files_by_extensions(extensions)
+            label = ", ".join(extensions)
             if files:
-                print(f"\nFiles with extension '{ext}' ({len(files)} files):")
+                print(f"\nFiles with extension(s) '{label}' ({len(files)} files):")
                 print("-" * 60)
                 for f in files:
                     print(f)
             else:
-                print(f"\nNo files found with extension '{ext}'")
+                print(f"\nNo files found with extension(s) '{label}'")
 
     # Operations
     elif args.action in ["move", "copy"]:
-        ext = args.type.lower().lstrip(".")
-        files = storage.get_files_by_extension(ext)
+        extensions = [t.lower().lstrip(".") for t in args.type]
+        files = storage.get_files_by_extensions(extensions)
+        label = ", ".join(extensions)
         if not files:
-            print(f"No files found with extension '{ext}'")
+            print(f"No files found with extension(s) '{label}'")
             return
 
-        print(f"Found {len(files)} files of type '{ext}'.")
+        print(f"Found {len(files)} files of type(s) '{label}'.")
         print(f"Destination: {args.dest}")
 
         if args.action == "copy":
