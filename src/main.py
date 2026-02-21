@@ -27,17 +27,20 @@ def format_size(size_bytes: int) -> str:
 SCAN_PATH = "/scan"
 
 
-def get_unique_report_path(report_dir: Path) -> Path:
+REPORT_DIR = Path("/reports")
+
+
+def get_unique_report_path() -> Path:
     """Generate a unique report filename using timestamp."""
-    report_dir.mkdir(parents=True, exist_ok=True)
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     base_name = f"report-{timestamp}"
-    report_path = report_dir / f"{base_name}.txt"
+    report_path = REPORT_DIR / f"{base_name}.txt"
 
     # Ensure uniqueness by appending counter if file exists
     counter = 1
     while report_path.exists():
-        report_path = report_dir / f"{base_name}_{counter}.txt"
+        report_path = REPORT_DIR / f"{base_name}_{counter}.txt"
         counter += 1
 
     return report_path
@@ -46,19 +49,15 @@ def get_unique_report_path(report_dir: Path) -> Path:
 def main():
     parser = argparse.ArgumentParser(description="File Scanner Service")
     parser.add_argument("--force-cache", action="store_true", help="Use cache only")
-    parser.add_argument("--verbose", action="store_true", help="Print detailed output")
     parser.add_argument(
         "--action",
         choices=["report", "move", "copy"],
         default="report",
         help="Action to perform",
     )
-    parser.add_argument("--type", help="File extension filter (required for move/copy)")
+    parser.add_argument("--type", nargs="+", help="File extension filter(s) (required for move/copy)")
     parser.add_argument("--dest", help="Destination directory (required for move/copy)")
-    parser.add_argument("--report", action="store_true", help="Save report to file")
-    parser.add_argument(
-        "--report-dir", default="/data/reports", help="Directory to save report files"
-    )
+
 
     args = parser.parse_args()
 
@@ -142,40 +141,42 @@ def main():
         # Print to stdout
         print("\n" + report_content)
 
-        # Save to file only if --report flag is used
-        if args.report:
-            report_dir = Path(args.report_dir)
-            report_path = get_unique_report_path(report_dir)
-            report_path.write_text(report_content)
-            print(f"\nReport saved to: {report_path}")
+        # Save report to file
+        report_path = get_unique_report_path()
+        report_path.write_text(report_content)
+        print(f"\nReport saved to: {report_path}")
 
-        # If --type is specified, list all files of that type
+        # If --type is specified, list all files of those types
         if args.type:
-            ext = args.type.lower().lstrip(".")
-            files = storage.get_files_by_extension(ext)
+            extensions = [t.lower().lstrip(".") for t in args.type]
+            files = storage.get_files_by_extensions(extensions)
+            label = ", ".join(extensions)
             if files:
-                print(f"\nFiles with extension '{ext}' ({len(files)} files):")
+                print(f"\nFiles with extension(s) '{label}' ({len(files)} files):")
                 print("-" * 60)
                 for f in files:
                     print(f)
             else:
-                print(f"\nNo files found with extension '{ext}'")
+                print(f"\nNo files found with extension(s) '{label}'")
 
     # Operations
     elif args.action in ["move", "copy"]:
-        ext = args.type.lower().lstrip(".")
-        files = storage.get_files_by_extension(ext)
+        extensions = [t.lower().lstrip(".") for t in args.type]
+        files = storage.get_files_by_extensions(extensions)
+        label = ", ".join(extensions)
         if not files:
-            print(f"No files found with extension '{ext}'")
+            print(f"No files found with extension(s) '{label}'")
             return
 
-        print(f"Found {len(files)} files of type '{ext}'.")
+        print(f"Found {len(files)} files of type(s) '{label}'.")
         print(f"Destination: {args.dest}")
 
+        group_by_ext = len(extensions) > 1
+
         if args.action == "copy":
-            copy_files(files, args.dest, base_path=SCAN_PATH)
+            copy_files(files, args.dest, base_path=SCAN_PATH, group_by_ext=group_by_ext)
         elif args.action == "move":
-            move_files(files, args.dest, base_path=SCAN_PATH)
+            move_files(files, args.dest, base_path=SCAN_PATH, group_by_ext=group_by_ext)
             # Update cache after move?
             # For now, let's recommend rescan.
             print("Note: Cache may be stale after move. Run scanner again to update.")

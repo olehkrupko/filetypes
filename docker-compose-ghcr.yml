@@ -1,12 +1,10 @@
 services:
   scanner:
     container_name: filetypes-scanner
-    image: ghcr.io/olehkrupko/filetypes:dev
+    image: ghcr.io/olehkrupko/filetypes:latest
     volumes:
       - /volume1/docker/filetypes/data:/data
+      - /volume1/docker/filetypes/reports:/reports
       - /volume1/homes/olehkrupko-other/Gallery:/scan:ro
       - /volume1/docker/filetypes/cache:/app/cache
-    command: ["--verbose", "--action report"]
-
-volumes:
-  cache_data:
+    command: ["python", "-m", "src.main", "--action", "report"]

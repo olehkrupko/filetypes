@@ -66,8 +66,13 @@ class Storage:
             return cursor.fetchall()
 
     def get_files_by_extension(self, extension: str) -> typing.List[str]:
+        return self.get_files_by_extensions([extension])
+
+    def get_files_by_extensions(self, extensions: typing.List[str]) -> typing.List[str]:
         with sqlite3.connect(self.db_path) as conn:
+            placeholders = ",".join("?" for _ in extensions)
             cursor = conn.execute(
-                "SELECT path FROM files WHERE extension = ? ORDER BY path", (extension,)
+                f"SELECT path FROM files WHERE extension IN ({placeholders}) ORDER BY path",
+                extensions,
             )
             return [row[0] for row in cursor.fetchall()]
