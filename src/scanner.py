@@ -21,6 +21,11 @@ def scan_directory(path: str) -> typing.Generator[FileInfo, None, None]:
                     # Skip hidden files/dirs
                     continue
 
+                # Skip Synology NAS metadata files
+                lower_name = entry.name.lower()
+                if lower_name.endswith("@synoresource") or lower_name.endswith("@synoeastream"):
+                    continue
+
                 if entry.is_dir(follow_symlinks=False):
                     yield from scan_directory(entry.path)
 
