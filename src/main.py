@@ -49,7 +49,6 @@ def get_unique_report_path() -> Path:
 def main():
     parser = argparse.ArgumentParser(description="File Scanner Service")
     parser.add_argument("--force-cache", action="store_true", help="Use cache only")
-    parser.add_argument("--verbose", action="store_true", help="Print detailed output")
     parser.add_argument(
         "--action",
         choices=["report", "move", "copy"],

@@ -34,7 +34,6 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 | Argument | Default | Description |
 |----------|---------|-------------|
 | `--force-cache` | `false` | Use cache only, skip scanning |
-| `--verbose` | `false` | Show detailed output |
 | `--action` | `report` | Action: `report`, `copy`, or `move` |
 | `--type` | — | File extension filter (required for copy/move) |
 | `--dest` | — | Destination directory (required for copy/move) |
@@ -44,7 +43,7 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 ### Generate a Report
 
 ```bash
-docker compose run scanner --verbose
+docker compose run scanner
 ```
 
 Reports are saved to `/reports/report-YYYYMMDD_HHMMSS.txt`

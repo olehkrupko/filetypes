@@ -7,4 +7,4 @@ services:
       - /volume1/docker/filetypes/reports:/reports
       - /volume1/homes/olehkrupko-other/Gallery:/scan:ro
       - /volume1/docker/filetypes/cache:/app/cache
-    command: ["python", "-m", "src.main", "--verbose", "--action", "report"]
+    command: ["python", "-m", "src.main", "--action", "report"]
