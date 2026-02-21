@@ -27,17 +27,20 @@ def format_size(size_bytes: int) -> str:
 SCAN_PATH = "/scan"
 
 
-def get_unique_report_path(report_dir: Path) -> Path:
+REPORT_DIR = Path("/reports")
+
+
+def get_unique_report_path() -> Path:
     """Generate a unique report filename using timestamp."""
-    report_dir.mkdir(parents=True, exist_ok=True)
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     base_name = f"report-{timestamp}"
-    report_path = report_dir / f"{base_name}.txt"
+    report_path = REPORT_DIR / f"{base_name}.txt"
 
     # Ensure uniqueness by appending counter if file exists
     counter = 1
     while report_path.exists():
-        report_path = report_dir / f"{base_name}_{counter}.txt"
+        report_path = REPORT_DIR / f"{base_name}_{counter}.txt"
         counter += 1
 
     return report_path
@@ -55,10 +58,7 @@ def main():
     )
     parser.add_argument("--type", help="File extension filter (required for move/copy)")
     parser.add_argument("--dest", help="Destination directory (required for move/copy)")
-    parser.add_argument("--report", action="store_true", help="Save report to file")
-    parser.add_argument(
-        "--report-dir", default="/data/reports", help="Directory to save report files"
-    )
+
 
     args = parser.parse_args()
 
@@ -142,12 +142,10 @@ def main():
         # Print to stdout
         print("\n" + report_content)
 
-        # Save to file only if --report flag is used
-        if args.report:
-            report_dir = Path(args.report_dir)
-            report_path = get_unique_report_path(report_dir)
-            report_path.write_text(report_content)
-            print(f"\nReport saved to: {report_path}")
+        # Save report to file
+        report_path = get_unique_report_path()
+        report_path.write_text(report_content)
+        print(f"\nReport saved to: {report_path}")
 
         # If --type is specified, list all files of that type
         if args.type:

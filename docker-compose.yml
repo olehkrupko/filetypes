@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - ./data:/data
+      - ./data/reports:/reports
       - "/Users/olehkrupko/Projects/012 Fitness:/scan:ro"
       - cache_data:/app/cache
     command: []

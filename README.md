@@ -38,7 +38,6 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 | `--action` | `report` | Action: `report`, `copy`, or `move` |
 | `--type` | — | File extension filter (required for copy/move) |
 | `--dest` | — | Destination directory (required for copy/move) |
-| `--report-dir` | `/data/reports` | Directory to save report files |
 
 ## Examples
 
@@ -48,7 +47,7 @@ docker compose run --remove-orphans scanner --force-cache --type mp4 --action co
 docker compose run scanner --verbose
 ```
 
-Reports are saved to `/data/reports/report-YYYYMMDD_HHMMSS.txt`
+Reports are saved to `/reports/report-YYYYMMDD_HHMMSS.txt`
 
 ### Copy All PDFs to a Folder
 
@@ -89,11 +88,12 @@ docker compose run --entrypoint pytest scanner src/tests/test_core.py
 
 ## Volumes
 
-The `docker-compose.yml` mounts two volumes:
+The `docker-compose.yml` mounts three volumes:
 
 | Host Path | Container Path | Purpose |
 |-----------|----------------|---------|
-| `./data` | `/data` | Directory to scan |
+| `./data` | `/data` | Data directory |
+| `./data/reports` | `/reports` | Saved reports |
 | `cache_data` | `/app/cache` | SQLite database |
 
 ## Requirements
