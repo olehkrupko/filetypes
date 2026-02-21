@@ -48,6 +48,22 @@ docker compose run scanner
 
 Reports are saved to `/reports/report-YYYYMMDD_HHMMSS.txt`
 
+Example output:
+
+```
+File Type Report
+Generated: 2026-02-21T12:20:48
+Scanned path: /scan
+
+Extension       | Count      | Total Size     
+----------------------------------------------
+mp4             | 120        | 14.53 GB       
+jpg             | 350        | 2.10 GB        
+pdf             | 45         | 512.30 MB      
+----------------------------------------------
+TOTAL           | 515        | 17.14 GB       
+```
+
 ### Copy All PDFs to a Folder
 
 ```bash
